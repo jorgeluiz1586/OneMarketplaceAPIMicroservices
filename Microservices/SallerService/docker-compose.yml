@@ -1,0 +1,36 @@
+services:
+  one_marketplace_saller_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-saller-service:latest
+    container_name: one_marketplace_saller_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_saller_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_saller_service
+    volumes:
+      - ./:/usr/src/one_marketplace_saller_service
+    ports:
+      - "5008:5008"
+      - "7008:7008"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_saller_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_saller_service_db
+    environment:
+      POSTGRES_USER: ${OMSALLERDBUSER}
+      POSTGRES_PASSWORD: ${OMSALLERDBPASSWORD}
+      POSTGRES_DB: ${OMSALLERDB}
+    ports:
+      - 5408:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

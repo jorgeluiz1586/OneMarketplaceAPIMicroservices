@@ -1,0 +1,36 @@
+services:
+  one_marketplace_product_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-product-service:latest
+    container_name: one_marketplace_product_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_product_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_product_service
+    volumes:
+      - ./:/usr/src/one_marketplace_product_service
+    ports:
+      - "5007:5007"
+      - "7007:7007"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_product_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_product_service_db
+    environment:
+      POSTGRES_USER: ${OMPRODUCTDBUSER}
+      POSTGRES_PASSWORD: ${OMPRODUCTDBPASSWORD}
+      POSTGRES_DB: ${OMPRODUCTDB}
+    ports:
+      - 5407:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

@@ -1,0 +1,36 @@
+services:
+  one_marketplace_payment_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-payment-service:latest
+    container_name: one_marketplace_payment_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_payment_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_payment_service
+    volumes:
+      - ./:/usr/src/one_marketplace_payment_service
+    ports:
+      - "5006:5006"
+      - "7006:7006"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_payment_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_payment_service_db
+    environment:
+      POSTGRES_USER: ${OMPAYMENTDBUSER}
+      POSTGRES_PASSWORD: ${OMPAYMENTDBPASSWORD}
+      POSTGRES_DB: ${OMPAYMENTDB}
+    ports:
+      - 5406:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

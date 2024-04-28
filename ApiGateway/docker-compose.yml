@@ -1,0 +1,22 @@
+services:
+  one_marketplace_api_gateway:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-api-gateway:latest
+    container_name: one_marketplace_api_gateway
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_api_gateway
+    volumes:
+      - ./:/usr/src/one_marketplace_api_gateway
+    ports:
+      - "5000:5000"
+      - "7000:7000"
+    networks:
+    - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

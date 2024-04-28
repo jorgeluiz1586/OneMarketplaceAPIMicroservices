@@ -1,0 +1,36 @@
+services:
+  one_marketplace_order_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-order-service:latest
+    container_name: one_marketplace_order_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_order_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_order_service
+    volumes:
+      - ./:/usr/src/one_marketplace_order_service
+    ports:
+      - "5005:5005"
+      - "7005:7005"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_order_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_order_service_db
+    environment:
+      POSTGRES_USER: ${OMORDERDBUSER}
+      POSTGRES_PASSWORD: ${OMORDERDBPASSWORD}
+      POSTGRES_DB: ${OMORDERDB}
+    ports:
+      - 5405:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

@@ -1,0 +1,36 @@
+services:
+  one_marketplace_notification_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-notification-service:latest
+    container_name: one_marketplace_notification_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_notification_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_notification_service
+    volumes:
+      - ./:/usr/src/one_marketplace_notification_service
+    ports:
+      - "5004:5004"
+      - "7004:7004"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_notification_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_notification_service_db
+    environment:
+      POSTGRES_USER: ${OMNOTIFICATIONDBUSER}
+      POSTGRES_PASSWORD: ${OMNOTIFICATIONDBPASSWORD}
+      POSTGRES_DB: ${OMNOTIFICATIONDB}
+    ports:
+      - 5404:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

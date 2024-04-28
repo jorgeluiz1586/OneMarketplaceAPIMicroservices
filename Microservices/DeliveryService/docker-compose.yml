@@ -1,0 +1,36 @@
+services:
+  one_marketplace_delivery_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-delivery-service:latest
+    container_name: one_marketplace_delivery_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_delivery_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_delivery_service
+    volumes:
+      - ./:/usr/src/one_marketplace_delivery_service
+    ports:
+      - "5002:5002"
+      - "7002:7002"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_delivery_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_delivery_service_db
+    environment:
+      POSTGRES_USER: ${OMDELIVERYDBUSER}
+      POSTGRES_PASSWORD: ${OMDELIVERYDBPASSWORD}
+      POSTGRES_DB: ${OMDELIVERYDB}
+    ports:
+      - 5402:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

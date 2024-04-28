@@ -1,0 +1,36 @@
+services:
+  one_marketplace_account_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-account-service:latest
+    container_name: one_marketplace_account_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_account_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_account_service
+    volumes:
+      - ./:/usr/src/one_marketplace_account_service
+    ports:
+      - "5001:5001"
+      - "7001:7001"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_account_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_account_service_db
+    environment:
+      POSTGRES_USER: ${OMACCOUNTDBUSER}
+      POSTGRES_PASSWORD: ${OMACCOUNTDBPASSWORD}
+      POSTGRES_DB: ${OMACCOUNTDB}
+    ports:
+      - 5401:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true

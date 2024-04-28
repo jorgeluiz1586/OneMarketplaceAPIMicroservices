@@ -1,0 +1,36 @@
+services:
+  one_marketplace_support_service:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: one-marketplace-support-service:latest
+    container_name: one_marketplace_support_service
+    restart: unless-stopped
+    depends_on:
+      - one_marketplace_support_service_db
+    stdin_open: true
+    tty: true
+    working_dir: /usr/src/one_marketplace_support_service
+    volumes:
+      - ./:/usr/src/one_marketplace_support_service
+    ports:
+      - "5009:5009"
+      - "7009:7009"
+    networks:
+    - one_marketplace_network
+
+  one_marketplace_support_service_db:
+    image: postgres:16-alpine
+    container_name: one_marketplace_support_service_db
+    environment:
+      POSTGRES_USER: ${OMSUPPORTDBUSER}
+      POSTGRES_PASSWORD: ${OMSUPPORTDBPASSWORD}
+      POSTGRES_DB: ${OMSUPPORTDB}
+    ports:
+      - 5409:5432
+    networks:
+      - one_marketplace_network
+
+networks:
+  one_marketplace_network:
+    external: true
