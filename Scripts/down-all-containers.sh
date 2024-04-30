@@ -1,0 +1,11 @@
+cd ${PWD}/../ApiGateway && docker-compose down
+cd ${PWD}/../Microservices/AccountService && docker-compose down
+cd ${PWD}/../../Microservices/DeliveryService && docker-compose down
+cd ${PWD}/../../Microservices/MarketingService && docker-compose down
+cd ${PWD}/../../Microservices/NotificationService && docker-compose down
+cd ${PWD}/../../Microservices/OrderService && docker-compose down
+cd ${PWD}/../../Microservices/PaymentService && docker-compose down
+cd ${PWD}/../../Microservices/ProductService && docker-compose down
+cd ${PWD}/../../Microservices/SallerService && docker-compose down
+cd ${PWD}/../../Microservices/SupportService && docker-compose down
+cd ${PWD}/../../Microservices/UserService && docker-compose down

@@ -1,0 +1,11 @@
+cd ${PWD}/../ApiGateway && docker-compose down && docker image rm one-marketplace-api-gateway:latest --force
+cd ${PWD}/../Microservices/AccountService && docker-compose down && docker image rm one-marketplace-account-service:latest --force
+cd ${PWD}/../../Microservices/DeliveryService && docker-compose down && docker image rm one-marketplace-delivery-service:latest --force
+cd ${PWD}/../../Microservices/MarketingService && docker-compose down && docker image rm one-marketplace-marketing-service:latest --force
+cd ${PWD}/../../Microservices/NotificationService && docker-compose down && docker image rm one-marketplace-notification-service:latest --force
+cd ${PWD}/../../Microservices/OrderService && docker-compose down && docker image rm one-marketplace-order-service:latest --force
+cd ${PWD}/../../Microservices/PaymentService && docker-compose down && docker image rm one-marketplace-payment-service:latest --force
+cd ${PWD}/../../Microservices/ProductService && docker-compose down && docker image rm one-marketplace-product-service:latest --force
+cd ${PWD}/../../Microservices/SallerService && docker-compose down && docker image rm one-marketplace-saller-service:latest --force
+cd ${PWD}/../../Microservices/SupportService && docker-compose down && docker image rm one-marketplace-support-service:latest --force
+cd ${PWD}/../../Microservices/UserService && docker-compose down && docker image rm one-marketplace-user-service:latest --force
